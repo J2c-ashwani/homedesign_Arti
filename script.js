@@ -65,7 +65,7 @@ const ROOMS = {
         { id: 'w_living_e', name: 'W', x: 38, y: 4, w: 6, h: 0.6, type: 'window' },
         { id: 'w_living_n', name: 'W', x: 60.4, y: 6, w: 0.6, h: 3, type: 'window' },
     ],
-    ff: [
+    ff_opt1: [
         // Balcony (only over full-depth zone, X:0-26)
         { id: 'balcony', name: 'Balcony', sub: '26×4', x: 0, y: 0, w: 26, h: 4, color: 'rgba(255,255,255,0.08)', border: 'dashed' },
 
@@ -106,12 +106,53 @@ const ROOMS = {
         { id: 'w_bed4_e', name: 'W', x: 30, y: 0, w: 5, h: 0.6, type: 'window' },
         { id: 'w_bed5_e', name: 'W', x: 46, y: 0, w: 5, h: 0.6, type: 'window' },
         { id: 'w_bath5_n', name: 'W', x: 60.4, y: 8, w: 0.6, h: 3, type: 'window' },
+    ],
+    ff_opt2: [
+        // Balcony (only over full-depth zone, X:0-26)
+        { id: 'balcony', name: 'Balcony', sub: '26×4', x: 0, y: 0, w: 26, h: 4, color: 'rgba(255,255,255,0.08)', border: 'dashed' },
+
+        // === FRONT ROOMS (Y: 4→13, 9ft deep) ===
+        // Option 2: No Bedroom 3, full 26x9 Family Lobby
+        { id: 'lobby_large', name: 'Large Family Lobby', sub: '26×9', x: 0, y: 4, w: 26, h: 9, color: 'rgba(255,255,255,0.05)' },
+
+        // === 4ft CORRIDOR (Y: 13→17) ===
+        { id: 'corridor_ff', name: '4ft Corridor', x: 0, y: 13, w: 26, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
+
+        // === BACK ROOMS (Y: 17→26, 9ft deep) ===
+        { id: 'master_ff', name: 'Master Bed (FF)', sub: '12×9 (SW)', x: 0, y: 17, w: 12, h: 9, color: 'rgba(150,100,255,0.12)' },
+        { id: 'att_bath_ff', name: 'Att. Bath', sub: '5×5', x: 12, y: 21, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
+        { id: 'com_bath_ff', name: 'Com. Bath', sub: '5×4', x: 12, y: 17, w: 5, h: 4, color: 'rgba(0,200,200,0.15)' },
+        { id: 'staircase_ff', name: 'Staircase', sub: '9×9', x: 17, y: 17, w: 9, h: 9, color: 'rgba(200,200,200,0.1)' },
+
+        // === NORTH REDUCED ZONE (X:26-61, Y:0-17, 13ft internal depth) ===
+        { id: 'ff_passage', name: '4ft Corridor', x: 26, y: 13, w: 35, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
+        { id: 'bed4', name: 'Bedroom 4', sub: '15×13', x: 26, y: 0, w: 15, h: 13, color: 'rgba(100,200,255,0.12)' },
+        { id: 'bed5_master', name: 'Master Bed 5', sub: '14×13', x: 41, y: 0, w: 14, h: 13, color: 'rgba(150,100,255,0.12)' },
+        { id: 'att_bath_5', name: 'Att. Bath', sub: '6×7', x: 55, y: 6, w: 6, h: 7, color: 'rgba(0,200,200,0.15)' },
+
+        // === DOORS ===
+        { id: 'd_master_ff', name: 'D', x: 4, y: 16.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_bath_ff1', name: 'D', x: 13, y: 16.5, w: 1, h: 1, type: 'door' },
+        { id: 'd_bath_ff2', name: 'D', x: 13, y: 20.5, w: 1, h: 1, type: 'door' },
+        { id: 'd_bed4', name: 'D', x: 31, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_bed5', name: 'D', x: 46, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_bath5', name: 'D', x: 54.5, y: 10, w: 1, h: 2.5, type: 'door' },
+
+        // === WINDOWS ===
+        { id: 'w_lobby_e', name: 'W', x: 4, y: 4, w: 5, h: 0.6, type: 'window' },
+        { id: 'w_lobby_s', name: 'W', x: 0, y: 7, w: 0.6, h: 4, type: 'window' },
+        { id: 'w_master_ff_s', name: 'W', x: 0, y: 20, w: 0.6, h: 4, type: 'window' },
+        { id: 'w_master_ff_w', name: 'W', x: 4, y: 25.4, w: 4, h: 0.6, type: 'window' },
+        { id: 'w_bed4_e', name: 'W', x: 30, y: 0, w: 5, h: 0.6, type: 'window' },
+        { id: 'w_bed5_e', name: 'W', x: 46, y: 0, w: 5, h: 0.6, type: 'window' },
+        { id: 'w_bath5_n', name: 'W', x: 60.4, y: 8, w: 0.6, h: 3, type: 'window' },
     ]
 };
 
 const blueprintEl = document.getElementById('blueprint');
 const btnGf = document.getElementById('btn-gf');
-const btnFf = document.getElementById('btn-ff');
+const btnFfOpt1 = document.getElementById('btn-ff-opt1');
+const btnFfOpt2 = document.getElementById('btn-ff-opt2');
 let currentScale = 1;
 
 function drawPlot(svg, svgNS) {
@@ -278,14 +319,23 @@ function renderFloor(floorKey) {
 
 btnGf.addEventListener('click', () => {
     btnGf.classList.add('active');
-    btnFf.classList.remove('active');
+    btnFfOpt1.classList.remove('active');
+    btnFfOpt2.classList.remove('active');
     renderFloor('gf');
 });
 
-btnFf.addEventListener('click', () => {
-    btnFf.classList.add('active');
+btnFfOpt1.addEventListener('click', () => {
+    btnFfOpt1.classList.add('active');
     btnGf.classList.remove('active');
-    renderFloor('ff');
+    btnFfOpt2.classList.remove('active');
+    renderFloor('ff_opt1');
+});
+
+btnFfOpt2.addEventListener('click', () => {
+    btnFfOpt2.classList.add('active');
+    btnGf.classList.remove('active');
+    btnFfOpt1.classList.remove('active');
+    renderFloor('ff_opt2');
 });
 
 document.getElementById('zoom-in').addEventListener('click', () => {

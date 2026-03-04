@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Architectural 2D Layout</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <div class="app-container">
         <!-- Sidebar -->
@@ -15,12 +18,17 @@
                 <div class="logo">✦</div>
                 <h1>SmartPlan</h1>
             </div>
-            
+
             <div class="control-group">
                 <h3>Floor Plans</h3>
                 <div class="btn-group">
                     <button id="btn-gf" class="btn active">Ground Floor</button>
-                    <button id="btn-ff" class="btn">First Floor</button>
+                </div>
+
+                <h3 style="margin-top: 15px; font-size: 0.75rem; color: #a0aab5;">First Floor Options</h3>
+                <div class="btn-group">
+                    <button id="btn-ff-opt1" class="btn">Option 1 (3 Beds)</button>
+                    <button id="btn-ff-opt2" class="btn">Option 2 (Large Lobby)</button>
                 </div>
             </div>
 
@@ -49,7 +57,8 @@
                     <span>Estimated Total:</span>
                     <span id="total-price" class="price">₹40,50,000</span>
                 </div>
-                <button class="btn primary" onclick="alert('Detailed estimate report downloading...')">Get Detailed Estimate</button>
+                <button class="btn primary" onclick="alert('Detailed estimate report downloading...')">Get Detailed
+                    Estimate</button>
             </div>
         </aside>
 
@@ -81,4 +90,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

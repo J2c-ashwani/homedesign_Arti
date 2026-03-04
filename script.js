@@ -1,19 +1,20 @@
 /*
   L-SHAPED PLOT: 61ft × 26ft
   X: 0(South) → 61(North) | Y: 0(East/Top) → 26(West/Bottom)
-  Full zone: X:0-26 (26ft depth) | Reduced zone: X:26-61 (13ft depth)
+  Full zone: X:0-26 (26ft depth) | Reduced zone: X:26-61 (17ft depth)
+  East passage: 13ft | Step: 9ft
 */
 
 const S = 15;
 const PLOT = [
-    { x: 0, y: 0 }, { x: 61, y: 0 }, { x: 61, y: 13 },
-    { x: 26, y: 13 }, { x: 26, y: 26 }, { x: 0, y: 26 },
+    { x: 0, y: 0 }, { x: 61, y: 0 }, { x: 61, y: 17 },
+    { x: 26, y: 17 }, { x: 26, y: 26 }, { x: 0, y: 26 },
 ];
 const DIMS = [
     { from: 0, to: 1, label: "61'-0\"", pos: 'top' },
-    { from: 1, to: 2, label: "13'-0\"", pos: 'right' },
+    { from: 1, to: 2, label: "17'-0\"", pos: 'right' },
     { from: 2, to: 3, label: "35'-0\"", pos: 'bottom-upper' },
-    { from: 3, to: 4, label: "13'-0\"", pos: 'step' },
+    { from: 3, to: 4, label: "9'-0\"", pos: 'step' },
     { from: 4, to: 5, label: "26'-0\"", pos: 'bottom' },
     { from: 5, to: 0, label: "26'-0\"", pos: 'left' },
 ];
@@ -38,8 +39,8 @@ const ROOMS = {
         { id: 'com_toilet', name: 'Com. Toilet', sub: '5×4', x: 12, y: 17, w: 5, h: 4, color: 'rgba(0,200,200,0.15)' },
         { id: 'staircase', name: 'Staircase', sub: '9×9 (W)', x: 17, y: 17, w: 9, h: 9, color: 'rgba(200,200,200,0.1)' },
 
-        // === NORTH REDUCED ZONE (X:26-61, Y:4-13) ===
-        { id: 'living', name: 'Living + Dining Hall', sub: '35×9', x: 26, y: 4, w: 35, h: 9, color: 'rgba(0,210,255,0.1)' },
+        // === NORTH REDUCED ZONE (X:26-61, Y:4-17, 13ft internal depth) ===
+        { id: 'living', name: 'Living + Dining Hall', sub: '35×13', x: 26, y: 4, w: 35, h: 13, color: 'rgba(0,210,255,0.1)' },
 
         // === GATES ===
         { id: 'gate_e', name: '↓ MAIN GATE', x: 28, y: 0, w: 8, h: 1.5, type: 'gate' },
@@ -81,21 +82,21 @@ const ROOMS = {
         { id: 'com_bath_ff', name: 'Com. Bath', sub: '5×4', x: 12, y: 17, w: 5, h: 4, color: 'rgba(0,200,200,0.15)' },
         { id: 'staircase_ff', name: 'Staircase', sub: '9×9', x: 17, y: 17, w: 9, h: 9, color: 'rgba(200,200,200,0.1)' },
 
-        // === NORTH REDUCED ZONE (X:26-61, Y:0-13, full 13ft depth) ===
-        // 3ft Passage at bottom (Y:10-13) connects to Family Lobby
-        { id: 'ff_passage', name: '3ft Passage', x: 26, y: 10, w: 35, h: 3, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
-        { id: 'bed4', name: 'Bedroom 4', sub: '15×10', x: 26, y: 0, w: 15, h: 10, color: 'rgba(100,200,255,0.12)' },
-        { id: 'bed5_master', name: 'Master Bed 5', sub: '14×10', x: 41, y: 0, w: 14, h: 10, color: 'rgba(150,100,255,0.12)' },
-        { id: 'att_bath_5', name: 'Att. Bath', sub: '6×7', x: 55, y: 0, w: 6, h: 7, color: 'rgba(0,200,200,0.15)' },
+        // === NORTH REDUCED ZONE (X:26-61, Y:0-17, 13ft internal depth) ===
+        // 4ft Corridor at bottom (Y:13-17) connects to Family Lobby/Corridor. Rooms are 13ft deep (Y:0-13)
+        { id: 'ff_passage', name: '4ft Corridor', x: 26, y: 13, w: 35, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
+        { id: 'bed4', name: 'Bedroom 4', sub: '15×13', x: 26, y: 0, w: 15, h: 13, color: 'rgba(100,200,255,0.12)' },
+        { id: 'bed5_master', name: 'Master Bed 5', sub: '14×13', x: 41, y: 0, w: 14, h: 13, color: 'rgba(150,100,255,0.12)' },
+        { id: 'att_bath_5', name: 'Att. Bath', sub: '6×7', x: 55, y: 6, w: 6, h: 7, color: 'rgba(0,200,200,0.15)' },
 
         // === DOORS ===
         { id: 'd_bed3', name: 'D', x: 4, y: 12.5, w: 3, h: 1, type: 'door' },
         { id: 'd_master_ff', name: 'D', x: 4, y: 16.5, w: 3, h: 1, type: 'door' },
         { id: 'd_bath_ff1', name: 'D', x: 13, y: 16.5, w: 1, h: 1, type: 'door' },
         { id: 'd_bath_ff2', name: 'D', x: 13, y: 20.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bed4', name: 'D', x: 31, y: 9.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bed5', name: 'D', x: 46, y: 9.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath5', name: 'D', x: 54.5, y: 3, w: 1, h: 2.5, type: 'door' },
+        { id: 'd_bed4', name: 'D', x: 31, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_bed5', name: 'D', x: 46, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_bath5', name: 'D', x: 54.5, y: 10, w: 1, h: 2.5, type: 'door' },
 
         // === WINDOWS ===
         { id: 'w_bed3_e', name: 'W', x: 4, y: 4, w: 5, h: 0.6, type: 'window' },
@@ -104,7 +105,7 @@ const ROOMS = {
         { id: 'w_master_ff_w', name: 'W', x: 4, y: 25.4, w: 4, h: 0.6, type: 'window' },
         { id: 'w_bed4_e', name: 'W', x: 30, y: 0, w: 5, h: 0.6, type: 'window' },
         { id: 'w_bed5_e', name: 'W', x: 46, y: 0, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_bath5_n', name: 'W', x: 60.4, y: 2, w: 0.6, h: 3, type: 'window' },
+        { id: 'w_bath5_n', name: 'W', x: 60.4, y: 8, w: 0.6, h: 3, type: 'window' },
     ]
 };
 

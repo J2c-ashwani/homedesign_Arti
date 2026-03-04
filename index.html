@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architectural 2D Layout</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo">✦</div>
+                <h1>SmartPlan</h1>
+            </div>
+            
+            <div class="control-group">
+                <h3>Floor Plans</h3>
+                <div class="btn-group">
+                    <button id="btn-gf" class="btn active">Ground Floor</button>
+                    <button id="btn-ff" class="btn">First Floor</button>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>Project Details</h3>
+                <ul>
+                    <li><strong>Plot Size:</strong> 26' × 60'</li>
+                    <li><strong>Facing:</strong> East</li>
+                    <li><strong>Floors:</strong> G+1</li>
+                    <li><strong>Total Area:</strong> 1,560 sq.ft</li>
+                    <li><strong>Built Area (GF):</strong> ~1,350 sq.ft</li>
+                </ul>
+            </div>
+
+            <div class="estimator-card">
+                <h3>Cost Estimate (Bihar/Jharkhand)</h3>
+                <div class="cost-row">
+                    <span>Construction Rate:</span>
+                    <select id="rate-select">
+                        <option value="1200">Standard (₹1200/sq.ft)</option>
+                        <option value="1500" selected>Premium (₹1500/sq.ft)</option>
+                        <option value="1800">Luxury (₹1800/sq.ft)</option>
+                    </select>
+                </div>
+                <div class="total-cost">
+                    <span>Estimated Total:</span>
+                    <span id="total-price" class="price">₹40,50,000</span>
+                </div>
+                <button class="btn primary" onclick="alert('Detailed estimate report downloading...')">Get Detailed Estimate</button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <header class="workspace-header">
+                <h2>Interactive 2D Blueprint</h2>
+                <div class="tools">
+                    <button class="icon-btn" title="Zoom In" id="zoom-in">+</button>
+                    <button class="icon-btn" title="Zoom Out" id="zoom-out">-</button>
+                    <button class="icon-btn" title="Reset" id="zoom-reset">⟲</button>
+                </div>
+            </header>
+
+            <div class="canvas-wrapper">
+                <div class="compass">
+                    <div class="north">N</div>
+                    <div class="axis">W <span>+</span> E</div>
+                    <div class="south">S</div>
+                </div>
+                <div class="blueprint-container" id="blueprint">
+                    <!-- Plot Boundary -->
+                    <div class="plot-boundary"></div>
+                    <!-- Rooms injected via JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -431,19 +431,31 @@ btnFfOpt4.addEventListener('click', () => {
     renderFloor('ff_opt4');
 });
 
+let currentRotation = 0;
+
+function updateTransform() {
+    blueprintEl.style.transform = `scale(${currentScale}) rotate(${currentRotation}deg)`;
+}
+
 document.getElementById('zoom-in').addEventListener('click', () => {
     currentScale += 0.15;
-    blueprintEl.style.transform = `scale(${currentScale})`;
+    updateTransform();
 });
 
 document.getElementById('zoom-out').addEventListener('click', () => {
     currentScale = Math.max(0.3, currentScale - 0.15);
-    blueprintEl.style.transform = `scale(${currentScale})`;
+    updateTransform();
 });
 
 document.getElementById('zoom-reset').addEventListener('click', () => {
     currentScale = 1;
-    blueprintEl.style.transform = 'scale(1)';
+    currentRotation = 0;
+    updateTransform();
+});
+
+document.getElementById('rotate-btn').addEventListener('click', () => {
+    currentRotation = (currentRotation + 90) % 360;
+    updateTransform();
 });
 
 document.getElementById('rate-select').addEventListener('change', (e) => {

@@ -139,7 +139,7 @@ const ROOMS = {
         { id: 'd_bath5', name: 'D', x: 54.5, y: 10, w: 1, h: 2.5, type: 'door' },
 
         // === WINDOWS ===
-        { id: 'w_lobby_e', name: 'W', x: 4, y: 4, w: 5, h: 0.6, type: 'window' },
+        { id: 'w_lobby_e', name: 'W', x: 4, y: 0, w: 5, h: 0.6, type: 'window' },
         { id: 'w_lobby_s', name: 'W', x: 0, y: 7, w: 0.6, h: 4, type: 'window' },
         { id: 'w_master_ff_s', name: 'W', x: 0, y: 20, w: 0.6, h: 4, type: 'window' },
         { id: 'w_master_ff_w', name: 'W', x: 4, y: 25.4, w: 4, h: 0.6, type: 'window' },
@@ -182,9 +182,8 @@ const ROOMS = {
         { id: 'w_bed5_e', name: 'W', x: 52, y: 0, w: 5, h: 0.6, type: 'window' },
     ],
     ff_opt4: [
-        // Option 4: Like Option 2 (Large Lobby), but washroom between Bed 4 & Bed 5
-        { id: 'balcony', name: 'Balcony', sub: '26×4', x: 0, y: 0, w: 26, h: 4, color: 'rgba(255,255,255,0.08)', border: 'dashed' },
-        { id: 'lobby_large', name: 'Large Family Lobby', sub: '26×9', x: 0, y: 4, w: 26, h: 9, color: 'rgba(255,255,255,0.05)' },
+        // Option 4: Like Option 3, but Bedroom 3 + Lobby + Balcony merged into a massive 26x13 Family Lobby
+        { id: 'lobby_large', name: 'Large Family Lobby', sub: '26×13', x: 0, y: 0, w: 26, h: 13, color: 'rgba(255,255,255,0.05)' },
         { id: 'corridor_ff', name: '4ft Corridor', x: 0, y: 13, w: 26, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
         { id: 'master_ff', name: 'Master Bed (FF)', sub: '12×9 (SW)', x: 0, y: 17, w: 12, h: 9, color: 'rgba(150,100,255,0.12)' },
         { id: 'att_bath_ff', name: 'Att. Bath', sub: '5×5', x: 12, y: 21, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },

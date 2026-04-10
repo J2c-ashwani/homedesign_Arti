@@ -301,6 +301,64 @@ const ROOMS = {
         { id: 'd_balcony_n_ff3', name: 'D', x: 58, y: 9.5, w: 1, h: 2, type: 'door' },
         { id: 'd_att_guest_ff3', name: 'D', x: 26, y: 14, w: 1, h: 2, type: 'door' },
         { id: 'd_att_guest_outer_ff3', name: 'D', x: 28, y: 11.5, w: 2, h: 1, type: 'door' }
+    ],
+    ff4: [
+        // === FRONT BALCONY — extends up to Big Bed 2 wall ===
+        { id: 'balcony_front_ff4', name: 'Front Balcony', x: -9, y: 0, w: 47, h: 4, color: 'rgba(255,255,255,0.08)' },
+
+        // === ZONE 1: SOUTH — identical to FF1 ===
+        { id: 'balcony_south_ff4', name: 'S. Balcony', sub: '4×22', x: -9, y: 4, w: 4, h: 22, color: 'rgba(255,255,255,0.08)' },
+        { id: 'master_ff4', name: 'Master Suite', sub: '13×18', x: 0, y: 4, w: 13, h: 18, color: 'rgba(150,100,255,0.12)' },
+        // Guest Washroom from West side of Master Suite (4ft deep)
+        { id: 'att_bath_guest_w_ff4', name: 'Att. Wash', sub: '13×4 (Guest)', x: 0, y: 22, w: 13, h: 4, color: 'rgba(0,200,200,0.15)' },
+        { id: 'sringar_ladies_ff4', name: 'Sringar Room', sub: '5×9', x: -5, y: 4, w: 5, h: 9, color: 'rgba(255,180,180,0.15)' },
+        { id: 'empty_area_ff4', name: 'Empty Area', sub: '5×5', x: -5, y: 13, w: 5, h: 5, color: 'rgba(255,230,150,0.15)' },
+        { id: 'wardrobe_cab_ff4', name: 'Cabinets', sub: '5×2', x: -5, y: 18, w: 5, h: 2, color: 'rgba(160,82,45,0.3)' },
+        { id: 'att_bath_ext_ff4', name: 'Att. Wash', sub: '5×6', x: -5, y: 20, w: 5, h: 6, color: 'rgba(0,200,200,0.15)' },
+        { id: 'guest_ff4', name: 'Guest Bedroom', sub: '13×13', x: 13, y: 13, w: 13, h: 13, color: 'rgba(100,200,255,0.12)' },
+        { id: 'lobby_ff4', name: 'Family Lobby', sub: '13×9', x: 13, y: 4, w: 13, h: 9, color: 'rgba(255,255,255,0.05)' },
+
+        // === ZONE 2: NORTH — front balcony absorbed into rooms ===
+        // North Side Balcony: 4ft cantilever (X: 58 to 62)
+        { id: 'balcony_north_ff4', name: 'N. Balcony', sub: '4×17', x: 58, y: 0, w: 4, h: 17, color: 'rgba(255,255,255,0.08)' },
+
+        // Staircase (7×10)
+        { id: 'staircase_ff4', name: 'Staircase', sub: '7×10', x: 26, y: 7, w: 7, h: 10, color: 'rgba(200,200,200,0.1)' },
+
+        // 5ft passage in front of staircase (fills the gap to Big Bed 2)
+        { id: 'passage_ff4', name: 'Passage', sub: '5×13', x: 33, y: 4, w: 5, h: 13, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
+
+        // Big Bed 2: 15×17 (absorbs 4ft front balcony, Y:0 to Y:17)
+        { id: 'big_room_2_ff4', name: 'Big Bed 2', sub: '15×17', x: 38, y: 0, w: 15, h: 17, color: 'rgba(150,100,255,0.15)' },
+
+        // Dressing Room: 7×5 (Y:0 to Y:7)
+        { id: 'sringar_n_ff4', name: 'Dressing Room', sub: '7×5 (NE)', x: 53, y: 0, w: 5, h: 7, color: 'rgba(255,230,150,0.15)' },
+
+        // Empty Area: 5×3 (Y:7 to Y:10)
+        { id: 'empty_n_ff4', name: 'Empty Area', sub: '5×3', x: 53, y: 7, w: 5, h: 3, color: 'rgba(255,230,150,0.15)' },
+
+        // Cabinets: 5×2 against washroom wall (Y:10 to Y:12)
+        { id: 'cab_n_ff4', name: 'Cabinets', sub: '5×2', x: 53, y: 10, w: 5, h: 2, color: 'rgba(160,82,45,0.3)' },
+
+        // Attached Washroom (5×5) — Y:12 to Y:17
+        { id: 'att_bath_n_ff4', name: 'Att. Wash', sub: '5×5 (NW)', x: 53, y: 12, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
+
+        // === DOORS ===
+        { id: 'd_master_ff4', name: 'D', x: 12.5, y: 8, w: 1, h: 3, type: 'door' },
+        { id: 'd_sringar_master_ff4', name: 'D', x: -3, y: 12.5, w: 2, h: 1, type: 'door' },
+        { id: 'd_wardrobe_master_ff4', name: 'D', x: -0.5, y: 15, w: 1, h: 2, type: 'door' },
+        { id: 'd_wash_master_ff4', name: 'D', x: -0.5, y: 21, w: 1, h: 2, type: 'door' },
+        { id: 'd_balcony_s_ff4', name: 'D', x: -5.5, y: 14, w: 1, h: 2, type: 'door' },
+
+        { id: 'd_guest_ff4', name: 'D', x: 17, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_big_room_2_ff4', name: 'D', x: 37.5, y: 8, w: 1, h: 3, type: 'door' },
+        { id: 'd_sringar_n_ff4', name: 'D', x: 55, y: 6.5, w: 2, h: 1, type: 'door' },
+        { id: 'd_wash_n_ff4', name: 'D', x: 53, y: 14, w: 1, h: 2, type: 'door' },
+        { id: 'd_balcony_n_ff4', name: 'D', x: 58, y: 9.5, w: 1, h: 2, type: 'door' },
+        { id: 'd_guest_wash_w_ff4', name: 'D', x: 12.5, y: 24, w: 1, h: 2, type: 'door' },
+
+        // === WINDOWS ===
+        { id: 'w_big_bed2_front_ff4', name: 'W', x: 42, y: 0, w: 5, h: 0.6, type: 'window' }
     ]
 };
 
@@ -310,6 +368,7 @@ const btnGf2 = document.getElementById('btn-gf2');
 const btnFf = document.getElementById('btn-ff');
 const btnFf2 = document.getElementById('btn-ff2');
 const btnFf3 = document.getElementById('btn-ff3');
+const btnFf4 = document.getElementById('btn-ff4');
 let currentScale = 1;
 
 function drawPlot(svg, svgNS) {
@@ -475,7 +534,7 @@ function renderFloor(floorKey) {
 }
 
 function setActive(btn) {
-    [btnGf, btnGf2, btnFf, btnFf2, btnFf3].forEach(b => {
+    [btnGf, btnGf2, btnFf, btnFf2, btnFf3, btnFf4].forEach(b => {
         if(b) b.classList.remove('active');
     });
     btn.classList.add('active');
@@ -486,6 +545,7 @@ btnGf2.addEventListener('click', () => { setActive(btnGf2); renderFloor('gf2'); 
 btnFf.addEventListener('click', () => { setActive(btnFf); renderFloor('ff'); });
 btnFf2.addEventListener('click', () => { setActive(btnFf2); renderFloor('ff2'); });
 if(btnFf3) btnFf3.addEventListener('click', () => { setActive(btnFf3); renderFloor('ff3'); });
+if(btnFf4) btnFf4.addEventListener('click', () => { setActive(btnFf4); renderFloor('ff4'); });
 
 let currentRotation = 0;
 

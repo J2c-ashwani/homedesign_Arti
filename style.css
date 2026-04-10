@@ -86,14 +86,15 @@ h3 {
 }
 
 .btn-group {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     padding: 4px;
 }
 
 .btn {
-    flex: 1;
     padding: 10px;
     background: transparent;
     border: none;

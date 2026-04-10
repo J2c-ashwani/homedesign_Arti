@@ -7,260 +7,309 @@
 
 const S = 15;
 const PLOT = [
-    { x: 0, y: 0 }, { x: 61, y: 0 }, { x: 61, y: 17 },
-    { x: 26, y: 17 }, { x: 26, y: 26 }, { x: 0, y: 26 },
+    { x: 0, y: 0 }, { x: 58, y: 0 }, { x: 58, y: 17 },
+    { x: 26, y: 17 }, { x: 26, y: 26 }, { x: -5, y: 26 },
+    { x: -5, y: 4 }, { x: 0, y: 4 },
 ];
 const DIMS = [
-    { from: 0, to: 1, label: "61'-0\"", pos: 'top' },
+    { from: 0, to: 1, label: "58'-0\"", pos: 'top' },
     { from: 1, to: 2, label: "17'-0\"", pos: 'right' },
     { from: 2, to: 3, label: "35'-0\"", pos: 'bottom-upper' },
     { from: 3, to: 4, label: "9'-0\"", pos: 'step' },
-    { from: 4, to: 5, label: "26'-0\"", pos: 'bottom' },
-    { from: 5, to: 0, label: "26'-0\"", pos: 'left' },
+    { from: 4, to: 5, label: "31'-0\"", pos: 'bottom' },
+    { from: 5, to: 6, label: "22'-0\"", pos: 'left' },
+    { from: 6, to: 7, label: "5'-0\"", pos: 'step' },
+    { from: 7, to: 0, label: "4'-0\"", pos: 'left' },
 ];
 
 // ===== ROOM DEFINITIONS =====
 const ROOMS = {
     gf: [
         // East Passage / Porch (4ft, becomes 1st floor balcony)
-        { id: 'passage', name: '4ft Passage / Porch', x: 0, y: 0, w: 61, h: 4, color: 'rgba(255,255,255,0.08)', border: 'dashed' },
+        { id: 'passage', name: '4ft Passage / Porch', x: 0, y: 0, w: 58, h: 4, color: 'rgba(255,255,255,0.08)', border: 'dashed' },
 
-        // === FRONT ROOMS (Y: 4→13, 9ft deep, facing East) ===
-        { id: 'kitchen', name: 'Kitchen', sub: '10×9 (SE)', x: 0, y: 4, w: 10, h: 9, color: 'rgba(255,165,0,0.12)' },
-        { id: 'guest', name: 'Guest Bedroom', sub: '11×9', x: 10, y: 4, w: 11, h: 9, color: 'rgba(100,200,255,0.12)' },
-        { id: 'puja', name: 'Puja', sub: '5×5 (NE)', x: 21, y: 4, w: 5, h: 5, color: 'rgba(255,215,0,0.15)' },
+        // === FRONT ROOMS ===
+        { id: 'washing', name: 'Wash Area', sub: '5×4 (SE)', x: -5, y: 4, w: 5, h: 4, color: 'rgba(180,255,200,0.15)' },
+        { id: 'store', name: 'Store Room', sub: '5×5 (SE)', x: -5, y: 8, w: 5, h: 5, color: 'rgba(255,180,180,0.15)' },
+        { id: 'kitchen', name: 'Kitchen', sub: '8×9 (SE)', x: 0, y: 4, w: 8, h: 9, color: 'rgba(255,165,0,0.12)' },
+        { id: 'lobby', name: 'Family Lounge', sub: '18×9', x: 8, y: 4, w: 18, h: 9, color: 'rgba(255,255,255,0.05)' },
 
-        // === 4ft INTERNAL CORRIDOR (Y: 13→17) ===
-        { id: 'corridor', name: '4ft Corridor / Passage', x: 0, y: 13, w: 26, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
-
-        // === BACK ROOMS (Y: 17→26, 9ft deep, facing West) ===
-        { id: 'master', name: 'Master Bed', sub: '12×9 (SW)', x: 0, y: 17, w: 12, h: 9, color: 'rgba(150,100,255,0.12)' },
-        { id: 'att_bath', name: 'Att. Bath', sub: '5×5', x: 12, y: 21, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
-        { id: 'com_toilet', name: 'Com. Toilet', sub: '5×4', x: 12, y: 17, w: 5, h: 4, color: 'rgba(0,200,200,0.15)' },
-        { id: 'staircase', name: 'Staircase', sub: '9×9 (W)', x: 17, y: 17, w: 9, h: 9, color: 'rgba(200,200,200,0.1)' },
+        // === BACK ROOMS (Y: 13→26, facing West) ===
+        { id: 'master', name: 'Master Bed', sub: '13×13 (SW)', x: 0, y: 13, w: 13, h: 13, color: 'rgba(150,100,255,0.12)' },
+        { id: 'wardrobe', name: 'Empty Area', sub: '5×5', x: -5, y: 15, w: 5, h: 5, color: 'rgba(255,230,150,0.15)' },
+        { id: 'wardrobe_cab', name: 'Cabinets', sub: '5×2', x: -5, y: 13, w: 5, h: 2, color: 'rgba(160,82,45,0.3)' },
+        { id: 'guest', name: 'Guest Bedroom', sub: '13×13 (W)', x: 13, y: 13, w: 13, h: 13, color: 'rgba(100,200,255,0.12)' },
+        { id: 'att_bath_ext', name: 'Att. Wash', sub: '5×6', x: -5, y: 20, w: 5, h: 6, color: 'rgba(0,200,200,0.15)' },
 
         // === NORTH REDUCED ZONE (X:26-61, Y:4-17, 13ft internal depth) ===
-        { id: 'living', name: 'Living + Dining Hall', sub: '35×13', x: 26, y: 4, w: 35, h: 13, color: 'rgba(0,210,255,0.1)' },
+        { id: 'living', name: 'Living + Dining Hall', sub: '32×13', x: 26, y: 4, w: 32, h: 13, color: 'rgba(0,210,255,0.1)' },
+        { id: 'puja', name: 'Puja', sub: '5×5 (NE)', x: 53, y: 4, w: 5, h: 5, color: 'rgba(255,215,0,0.15)' },
+        { id: 'staircase', name: 'Staircase', sub: '10×7', x: 26, y: 10, w: 10, h: 7, color: 'rgba(200,200,200,0.1)' },
+        { id: 'com_toilet', name: 'Com. Wash', sub: '5×5 (NW)', x: 53, y: 12, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
 
         // === GATES ===
         { id: 'gate_e', name: '↓ MAIN GATE', x: 28, y: 0, w: 8, h: 1.5, type: 'gate' },
-        { id: 'gate_n', name: 'N GATE →', x: 59.5, y: 5.5, w: 1.5, h: 4, type: 'gate' },
+        { id: 'gate_n', name: 'N GATE →', x: 58, y: 9.5, w: 1.5, h: 2, type: 'gate' },
 
-        // === DOORS (all open onto corridor at Y:13-17) ===
+        // === DOORS ===
         { id: 'd_main', name: 'D', x: 30, y: 3.5, w: 3.5, h: 1, type: 'door' },
-        { id: 'd_north', name: 'D', x: 60, y: 6, w: 1, h: 3, type: 'door' },
-        { id: 'd_kitchen', name: 'D', x: 4, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_guest', name: 'D', x: 14, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_puja', name: 'D', x: 22, y: 8.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_master', name: 'D', x: 4, y: 16.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath1', name: 'D', x: 13, y: 16.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bath2', name: 'D', x: 13, y: 20.5, w: 1, h: 1, type: 'door' },
+        { id: 'd_north', name: 'D', x: 58, y: 9.5, w: 1, h: 2, type: 'door' },
+        { id: 'd_kitchen', name: 'D', x: 7.5, y: 8, w: 1, h: 3, type: 'door' },
+        { id: 'd_master', name: 'D', x: 9.5, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_guest', name: 'D', x: 17, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_puja', name: 'D', x: 53, y: 6, w: 1, h: 2, type: 'door' },
+        { id: 'd_com_toilet', name: 'D', x: 53, y: 14, w: 1, h: 2, type: 'door' },
+        { id: 'd_wardrobe', name: 'D', x: -0.5, y: 16, w: 1, h: 2, type: 'door' },
+        { id: 'd_att_master', name: 'D', x: -3, y: 19.5, w: 2, h: 1, type: 'door' },
+        { id: 'd_store', name: 'D', x: -0.5, y: 10, w: 1, h: 2, type: 'door' },
+        { id: 'd_washing', name: 'D', x: -3, y: 3.5, w: 2, h: 1, type: 'door' },
 
         // === WINDOWS ===
-        { id: 'w_kitchen_e', name: 'W', x: 3, y: 4, w: 4, h: 0.6, type: 'window' },
-        { id: 'w_kitchen_s', name: 'W', x: 0, y: 6, w: 0.6, h: 4, type: 'window' },
-        { id: 'w_guest_e', name: 'W', x: 13, y: 4, w: 4, h: 0.6, type: 'window' },
-        { id: 'w_master_s', name: 'W', x: 0, y: 20, w: 0.6, h: 4, type: 'window' },
+        { id: 'w_kitchen_e', name: 'W', x: 2, y: 4, w: 4, h: 0.6, type: 'window' },
+        { id: 'w_washing_s', name: 'W', x: -5, y: 5, w: 0.6, h: 2, type: 'window' },
+        { id: 'w_store_s', name: 'W', x: -5, y: 9.5, w: 0.6, h: 2, type: 'window' },
+        { id: 'w_wardrobe_s', name: 'W', x: -5, y: 16, w: 0.6, h: 2.5, type: 'window' },
         { id: 'w_master_w', name: 'W', x: 3, y: 25.4, w: 4, h: 0.6, type: 'window' },
+        { id: 'w_guest_w', name: 'W', x: 17, y: 25.4, w: 4, h: 0.6, type: 'window' },
+        { id: 'w_att_bath', name: 'W', x: -5, y: 22, w: 0.6, h: 2, type: 'window' },
         { id: 'w_living_e', name: 'W', x: 38, y: 4, w: 6, h: 0.6, type: 'window' },
-        { id: 'w_living_n', name: 'W', x: 60.4, y: 6, w: 0.6, h: 3, type: 'window' },
+        { id: 'w_puja_n', name: 'W', x: 57.4, y: 6, w: 0.6, h: 2, type: 'window' },
+        { id: 'w_com_toilet_n', name: 'W', x: 57.4, y: 13.5, w: 0.6, h: 2, type: 'window' },
     ],
-    ff_opt1: [
-        // Balcony (only over full-depth zone, X:0-26)
-        { id: 'balcony', name: 'Balcony', sub: '26×4', x: 0, y: 0, w: 26, h: 4, color: 'rgba(255,255,255,0.08)', border: 'dashed' },
+    gf2: [
+        // === FRONT ROOMS ===
+        { id: 'washing_gf2', name: 'Wash Area', sub: '5×4 (SE)', x: -5, y: 4, w: 5, h: 4, color: 'rgba(180,255,200,0.15)' },
+        { id: 'store_gf2', name: 'Store Room', sub: '5×5 (SE)', x: -5, y: 8, w: 5, h: 5, color: 'rgba(255,180,180,0.15)' },
+        { id: 'kitchen_gf2', name: 'Kitchen', sub: '8×9 (SE)', x: 0, y: 4, w: 8, h: 9, color: 'rgba(255,165,0,0.12)' },
+        { id: 'lobby_gf2', name: 'Family Lounge', sub: '18×9', x: 8, y: 4, w: 18, h: 9, color: 'rgba(255,255,255,0.05)' },
 
-        // === FRONT ROOMS (Y: 4→13, 9ft deep) ===
-        { id: 'bed3', name: 'Bedroom 3', sub: '13×9', x: 0, y: 4, w: 13, h: 9, color: 'rgba(100,200,255,0.12)' },
-        { id: 'lobby', name: 'Family Lobby', sub: '13×9', x: 13, y: 4, w: 13, h: 9, color: 'rgba(255,255,255,0.05)' },
+        // === BACK ROOMS (Y: 13→26, facing West) ===
+        { id: 'master_gf2', name: 'Master Bed', sub: '13×13 (SW)', x: 0, y: 13, w: 13, h: 13, color: 'rgba(150,100,255,0.12)' },
+        { id: 'wardrobe_gf2', name: 'Empty Area', sub: '5×5', x: -5, y: 15, w: 5, h: 5, color: 'rgba(255,230,150,0.15)' },
+        { id: 'wardrobe_cab_gf2', name: 'Cabinets', sub: '5×2', x: -5, y: 13, w: 5, h: 2, color: 'rgba(160,82,45,0.3)' },
+        { id: 'guest_gf2', name: 'Guest Bedroom', sub: '13×13 (W)', x: 13, y: 13, w: 13, h: 13, color: 'rgba(100,200,255,0.12)' },
+        { id: 'att_bath_ext_gf2', name: 'Att. Wash', sub: '5×6', x: -5, y: 20, w: 5, h: 6, color: 'rgba(0,200,200,0.15)' },
 
-        // === 4ft CORRIDOR (Y: 13→17) ===
-        { id: 'corridor_ff', name: '4ft Corridor', x: 0, y: 13, w: 26, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
+        // === NORTH REDUCED ZONE (X:26-61, Y:4-17, 13ft internal depth) ===
+        { id: 'living_gf2', name: 'Living + Dining Hall', sub: '32×13', x: 26, y: 4, w: 32, h: 13, color: 'rgba(0,210,255,0.1)' },
+        { id: 'puja_gf2', name: 'Puja', sub: '5×5 (NE)', x: 53, y: 4, w: 5, h: 5, color: 'rgba(255,215,0,0.15)' },
+        { id: 'staircase_gf2', name: 'Staircase', sub: '7×10', x: 31, y: 7, w: 7, h: 10, color: 'rgba(200,200,200,0.1)' },
+        { id: 'att_bath_guest_gf2', name: 'Att. Wash', sub: '5×5 (Guest)', x: 26, y: 12, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
+        { id: 'com_toilet_gf2', name: 'Com. Wash', sub: '5×5 (NW)', x: 53, y: 12, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
 
-        // === BACK ROOMS (Y: 17→26, 9ft deep) ===
-        { id: 'master_ff', name: 'Master Bed (FF)', sub: '12×9 (SW)', x: 0, y: 17, w: 12, h: 9, color: 'rgba(150,100,255,0.12)' },
-        { id: 'att_bath_ff', name: 'Att. Bath', sub: '5×5', x: 12, y: 21, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
-        { id: 'com_bath_ff', name: 'Com. Bath', sub: '5×4', x: 12, y: 17, w: 5, h: 4, color: 'rgba(0,200,200,0.15)' },
-        { id: 'staircase_ff', name: 'Staircase', sub: '9×9', x: 17, y: 17, w: 9, h: 9, color: 'rgba(200,200,200,0.1)' },
-
-        // === NORTH REDUCED ZONE (X:26-61, Y:0-17, 13ft internal depth) ===
-        // 4ft Corridor at bottom (Y:13-17) connects to Family Lobby/Corridor. Rooms are 13ft deep (Y:0-13)
-        { id: 'ff_passage', name: '4ft Corridor', x: 26, y: 13, w: 35, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
-        { id: 'bed4', name: 'Bedroom 4', sub: '15×13', x: 26, y: 0, w: 15, h: 13, color: 'rgba(100,200,255,0.12)' },
-        { id: 'bed5_master', name: 'Master Bed 5', sub: '14×13', x: 41, y: 0, w: 14, h: 13, color: 'rgba(150,100,255,0.12)' },
-        { id: 'att_bath_5', name: 'Att. Bath', sub: '6×7', x: 55, y: 6, w: 6, h: 7, color: 'rgba(0,200,200,0.15)' },
+        // === GATES ===
+        { id: 'gate_e_gf2', name: '↓ MAIN GATE', x: 28, y: 0, w: 8, h: 1.5, type: 'gate' },
+        { id: 'gate_n_gf2', name: 'N GATE →', x: 58, y: 9.5, w: 1.5, h: 2, type: 'gate' },
 
         // === DOORS ===
-        { id: 'd_bed3', name: 'D', x: 4, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_master_ff', name: 'D', x: 4, y: 16.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath_ff1', name: 'D', x: 13, y: 16.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bath_ff2', name: 'D', x: 13, y: 20.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bed4', name: 'D', x: 31, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bed5', name: 'D', x: 46, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath5', name: 'D', x: 54.5, y: 10, w: 1, h: 2.5, type: 'door' },
+        { id: 'd_main_gf2', name: 'D', x: 30, y: 3.5, w: 3.5, h: 1, type: 'door' },
+        { id: 'd_north_gf2', name: 'D', x: 58, y: 9.5, w: 1, h: 2, type: 'door' },
+        { id: 'd_kitchen_gf2', name: 'D', x: 7.5, y: 8, w: 1, h: 3, type: 'door' },
+        { id: 'd_master_gf2', name: 'D', x: 9.5, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_guest_gf2', name: 'D', x: 17, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_puja_gf2', name: 'D', x: 53, y: 6, w: 1, h: 2, type: 'door' },
+        { id: 'd_com_toilet_gf2', name: 'D', x: 53, y: 14, w: 1, h: 2, type: 'door' },
+        { id: 'd_wardrobe_gf2', name: 'D', x: -0.5, y: 16, w: 1, h: 2, type: 'door' },
+        { id: 'd_att_master_gf2', name: 'D', x: -3, y: 19.5, w: 2, h: 1, type: 'door' },
+        { id: 'd_store_gf2', name: 'D', x: -0.5, y: 10, w: 1, h: 2, type: 'door' },
+        { id: 'd_washing_gf2', name: 'D', x: -3, y: 3.5, w: 2, h: 1, type: 'door' },
+        { id: 'd_att_guest_gf2', name: 'D', x: 26, y: 14, w: 1, h: 2, type: 'door' },
 
         // === WINDOWS ===
-        { id: 'w_bed3_e', name: 'W', x: 4, y: 4, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_bed3_s', name: 'W', x: 0, y: 7, w: 0.6, h: 4, type: 'window' },
-        { id: 'w_master_ff_s', name: 'W', x: 0, y: 20, w: 0.6, h: 4, type: 'window' },
-        { id: 'w_master_ff_w', name: 'W', x: 4, y: 25.4, w: 4, h: 0.6, type: 'window' },
-        { id: 'w_bed4_e', name: 'W', x: 30, y: 0, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_bed5_e', name: 'W', x: 46, y: 0, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_bath5_n', name: 'W', x: 60.4, y: 8, w: 0.6, h: 3, type: 'window' },
+        { id: 'w_kitchen_e_gf2', name: 'W', x: 2, y: 4, w: 4, h: 0.6, type: 'window' },
+        { id: 'w_washing_s_gf2', name: 'W', x: -5, y: 5, w: 0.6, h: 2, type: 'window' },
+        { id: 'w_store_s_gf2', name: 'W', x: -5, y: 9.5, w: 0.6, h: 2, type: 'window' },
+        { id: 'w_wardrobe_s_gf2', name: 'W', x: -5, y: 16, w: 0.6, h: 2.5, type: 'window' },
+        { id: 'w_master_w_gf2', name: 'W', x: 3, y: 25.4, w: 4, h: 0.6, type: 'window' },
+        { id: 'w_guest_w_gf2', name: 'W', x: 17, y: 25.4, w: 4, h: 0.6, type: 'window' },
+        { id: 'w_att_bath_gf2', name: 'W', x: -5, y: 22, w: 0.6, h: 2, type: 'window' },
+        { id: 'w_living_e_gf2', name: 'W', x: 38, y: 4, w: 6, h: 0.6, type: 'window' },
+        { id: 'w_puja_n_gf2', name: 'W', x: 57.4, y: 6, w: 0.6, h: 2, type: 'window' },
+        { id: 'w_com_toilet_n_gf2', name: 'W', x: 57.4, y: 13.5, w: 0.6, h: 2, type: 'window' }
     ],
-    ff_opt2: [
-        // Balcony (only over full-depth zone, X:0-26)
-        { id: 'balcony', name: 'Balcony', sub: '26×4', x: 0, y: 0, w: 26, h: 4, color: 'rgba(255,255,255,0.08)', border: 'dashed' },
+    ff: [
+        // === FRONT BALCONY (4ft extension over passage — East side, connects both side balconies) ===
+        { id: 'balcony_front_ff', name: 'Front Balcony', x: -9, y: 0, w: 71, h: 4, color: 'rgba(255,255,255,0.08)' },
 
-        // === FRONT ROOMS (Y: 4→13, 9ft deep) ===
-        // Option 2: No Bedroom 3, full 26x9 Family Lobby
-        { id: 'lobby_large', name: 'Large Family Lobby', sub: '26×9', x: 0, y: 4, w: 26, h: 9, color: 'rgba(255,255,255,0.05)' },
+        // === ZONE 1: SOUTH (26×26 + 5ft extension) ===
+        // South Balcony: 4ft cantilever outside the south wall (X: -9 to -5)
+        { id: 'balcony_south_ff', name: 'S. Balcony', sub: '4×22', x: -9, y: 4, w: 4, h: 22, color: 'rgba(255,255,255,0.08)' },
 
-        // === 4ft CORRIDOR (Y: 13→17) ===
-        { id: 'corridor_ff', name: '4ft Corridor', x: 0, y: 13, w: 26, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
+        // Master Suite: absorbs kitchen area (13×22)
+        { id: 'master_ff', name: 'Master Suite', sub: '13×22', x: 0, y: 4, w: 13, h: 22, color: 'rgba(150,100,255,0.12)' },
 
-        // === BACK ROOMS (Y: 17→26, 9ft deep) ===
-        { id: 'master_ff', name: 'Master Bed (FF)', sub: '12×9 (SW)', x: 0, y: 17, w: 12, h: 9, color: 'rgba(150,100,255,0.12)' },
-        { id: 'att_bath_ff', name: 'Att. Bath', sub: '5×5', x: 12, y: 21, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
-        { id: 'com_bath_ff', name: 'Com. Bath', sub: '5×4', x: 12, y: 17, w: 5, h: 4, color: 'rgba(0,200,200,0.15)' },
-        { id: 'staircase_ff', name: 'Staircase', sub: '9×9', x: 17, y: 17, w: 9, h: 9, color: 'rgba(200,200,200,0.1)' },
+        // Sringar Room: replaces GF store+wash area (5×9)
+        { id: 'sringar_ladies_ff', name: 'Sringar Room', sub: '5×9', x: -5, y: 4, w: 5, h: 9, color: 'rgba(255,180,180,0.15)' },
 
-        // === NORTH REDUCED ZONE (X:26-61, Y:0-17, 13ft internal depth) ===
-        { id: 'ff_passage', name: '4ft Corridor', x: 26, y: 13, w: 35, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
-        { id: 'bed4', name: 'Bedroom 4', sub: '15×13', x: 26, y: 0, w: 15, h: 13, color: 'rgba(100,200,255,0.12)' },
-        { id: 'bed5_master', name: 'Master Bed 5', sub: '14×13', x: 41, y: 0, w: 14, h: 13, color: 'rgba(150,100,255,0.12)' },
-        { id: 'att_bath_5', name: 'Att. Bath', sub: '6×7', x: 55, y: 6, w: 6, h: 7, color: 'rgba(0,200,200,0.15)' },
+        // Empty Area (5×5) + Cabinets (5×2) against washroom wall
+        { id: 'empty_area_ff', name: 'Empty Area', sub: '5×5', x: -5, y: 13, w: 5, h: 5, color: 'rgba(255,230,150,0.15)' },
+        { id: 'wardrobe_cab_ff', name: 'Cabinets', sub: '5×2', x: -5, y: 18, w: 5, h: 2, color: 'rgba(160,82,45,0.3)' },
+
+        // Attached Washroom (5×6) — same as GF
+        { id: 'att_bath_ext_ff', name: 'Att. Wash', sub: '5×6', x: -5, y: 20, w: 5, h: 6, color: 'rgba(0,200,200,0.15)' },
+
+        // Guest Bedroom (13×13) — same footprint as GF
+        { id: 'guest_ff', name: 'Guest Bedroom', sub: '13×13', x: 13, y: 13, w: 13, h: 13, color: 'rgba(100,200,255,0.12)' },
+
+        // Family Lobby (13×9) — above GF kitchen zone
+        { id: 'lobby_ff', name: 'Family Lobby', sub: '13×9', x: 13, y: 4, w: 13, h: 9, color: 'rgba(255,255,255,0.05)' },
+
+        // === ZONE 2: NORTH (32×13 area) ===
+        // North Balcony: 4ft cantilever outside the north wall (X: 58 to 62)
+        { id: 'balcony_north_ff', name: 'N. Balcony', sub: '4×13', x: 58, y: 4, w: 4, h: 13, color: 'rgba(255,255,255,0.08)' },
+
+        // Staircase (10×7) — same position as GF
+        { id: 'staircase_ff', name: 'Staircase', sub: '10×7', x: 26, y: 10, w: 10, h: 7, color: 'rgba(200,200,200,0.1)' },
+
+        // 2ft passage in front of staircase (X:36 to X:38)
+        { id: 'passage_ff', name: 'Passage', sub: '2×13', x: 36, y: 4, w: 2, h: 13, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
+
+        // Big Bed 2: 15×13 (X:38 to X:53)
+        { id: 'big_room_2_ff', name: 'Big Bed 2', sub: '15×13', x: 38, y: 4, w: 15, h: 13, color: 'rgba(150,100,255,0.15)' },
+
+        // Dressing Room (5×5) — above GF Puja Ghar
+        { id: 'sringar_n_ff', name: 'Dressing Room', sub: '5×5 (NE)', x: 53, y: 4, w: 5, h: 5, color: 'rgba(255,230,150,0.15)' },
+
+        // Attached Washroom (5×5) — above GF Common Washroom
+        { id: 'att_bath_n_ff', name: 'Att. Wash', sub: '5×5 (NW)', x: 53, y: 12, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
 
         // === DOORS ===
-        { id: 'd_master_ff', name: 'D', x: 4, y: 16.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath_ff1', name: 'D', x: 13, y: 16.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bath_ff2', name: 'D', x: 13, y: 20.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bed4', name: 'D', x: 31, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bed5', name: 'D', x: 46, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath5', name: 'D', x: 54.5, y: 10, w: 1, h: 2.5, type: 'door' },
+        { id: 'd_master_ff_lobby', name: 'D', x: 12.5, y: 8, w: 1, h: 3, type: 'door' },
+        { id: 'd_sringar_master', name: 'D', x: -3, y: 12.5, w: 2, h: 1, type: 'door' },
+        { id: 'd_wardrobe_master', name: 'D', x: -0.5, y: 15, w: 1, h: 2, type: 'door' },
+        { id: 'd_wash_master', name: 'D', x: -0.5, y: 21, w: 1, h: 2, type: 'door' },
+        { id: 'd_balcony_s_ff', name: 'D', x: -5.5, y: 14, w: 1, h: 2, type: 'door' },
+
+        { id: 'd_guest_ff_lobby', name: 'D', x: 17, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_big_room_2', name: 'D', x: 37.5, y: 8, w: 1, h: 3, type: 'door' },
+        { id: 'd_sringar_n_ff', name: 'D', x: 53, y: 6, w: 1, h: 2, type: 'door' },
+        { id: 'd_wash_n_ff', name: 'D', x: 53, y: 14, w: 1, h: 2, type: 'door' },
+        { id: 'd_balcony_n_ff', name: 'D', x: 58, y: 9.5, w: 1, h: 2, type: 'door' }
+    ],
+    ff2: [
+        // === FRONT BALCONY — extends up to Big Bed 2 wall ===
+        { id: 'balcony_front_ff2', name: 'Front Balcony', x: -9, y: 0, w: 47, h: 4, color: 'rgba(255,255,255,0.08)' },
+
+        // === ZONE 1: SOUTH — identical to FF1 ===
+        { id: 'balcony_south_ff2', name: 'S. Balcony', sub: '4×22', x: -9, y: 4, w: 4, h: 22, color: 'rgba(255,255,255,0.08)' },
+        { id: 'master_ff2', name: 'Master Suite', sub: '13×22', x: 0, y: 4, w: 13, h: 22, color: 'rgba(150,100,255,0.12)' },
+        { id: 'sringar_ladies_ff2', name: 'Sringar Room', sub: '5×9', x: -5, y: 4, w: 5, h: 9, color: 'rgba(255,180,180,0.15)' },
+        { id: 'empty_area_ff2', name: 'Empty Area', sub: '5×5', x: -5, y: 13, w: 5, h: 5, color: 'rgba(255,230,150,0.15)' },
+        { id: 'wardrobe_cab_ff2', name: 'Cabinets', sub: '5×2', x: -5, y: 18, w: 5, h: 2, color: 'rgba(160,82,45,0.3)' },
+        { id: 'att_bath_ext_ff2', name: 'Att. Wash', sub: '5×6', x: -5, y: 20, w: 5, h: 6, color: 'rgba(0,200,200,0.15)' },
+        { id: 'guest_ff2', name: 'Guest Bedroom', sub: '13×13', x: 13, y: 13, w: 13, h: 13, color: 'rgba(100,200,255,0.12)' },
+        { id: 'lobby_ff2', name: 'Family Lobby', sub: '13×9', x: 13, y: 4, w: 13, h: 9, color: 'rgba(255,255,255,0.05)' },
+
+        // === ZONE 2: NORTH — front balcony absorbed into rooms ===
+        // North Side Balcony: 4ft cantilever (X: 58 to 62)
+        { id: 'balcony_north_ff2', name: 'N. Balcony', sub: '4×17', x: 58, y: 0, w: 4, h: 17, color: 'rgba(255,255,255,0.08)' },
+
+        // Staircase (10×7) — same position
+        { id: 'staircase_ff2', name: 'Staircase', sub: '10×7', x: 26, y: 10, w: 10, h: 7, color: 'rgba(200,200,200,0.1)' },
+
+        // 2ft passage in front of staircase
+        { id: 'passage_ff2', name: 'Passage', sub: '2×17', x: 36, y: 0, w: 2, h: 17, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
+
+        // Big Bed 2: 15×17 (absorbs 4ft front balcony, Y:0 to Y:17)
+        { id: 'big_room_2_ff2', name: 'Big Bed 2', sub: '15×17', x: 38, y: 0, w: 15, h: 17, color: 'rgba(150,100,255,0.15)' },
+
+        // Dressing Room: 7×5 (Y:0 to Y:7)
+        { id: 'sringar_n_ff2', name: 'Dressing Room', sub: '7×5 (NE)', x: 53, y: 0, w: 5, h: 7, color: 'rgba(255,230,150,0.15)' },
+
+        // Empty Area: 5×3 (Y:7 to Y:10)
+        { id: 'empty_n_ff2', name: 'Empty Area', sub: '5×3', x: 53, y: 7, w: 5, h: 3, color: 'rgba(255,230,150,0.15)' },
+
+        // Cabinets: 5×2 against washroom wall (Y:10 to Y:12)
+        { id: 'cab_n_ff2', name: 'Cabinets', sub: '5×2', x: 53, y: 10, w: 5, h: 2, color: 'rgba(160,82,45,0.3)' },
+
+        // Attached Washroom (5×5) — Y:12 to Y:17
+        { id: 'att_bath_n_ff2', name: 'Att. Wash', sub: '5×5 (NW)', x: 53, y: 12, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
+
+        // === DOORS ===
+        { id: 'd_master_ff2', name: 'D', x: 12.5, y: 8, w: 1, h: 3, type: 'door' },
+        { id: 'd_sringar_master_ff2', name: 'D', x: -3, y: 12.5, w: 2, h: 1, type: 'door' },
+        { id: 'd_wardrobe_master_ff2', name: 'D', x: -0.5, y: 15, w: 1, h: 2, type: 'door' },
+        { id: 'd_wash_master_ff2', name: 'D', x: -0.5, y: 21, w: 1, h: 2, type: 'door' },
+        { id: 'd_balcony_s_ff2', name: 'D', x: -5.5, y: 14, w: 1, h: 2, type: 'door' },
+
+        { id: 'd_guest_ff2', name: 'D', x: 17, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_big_room_2_ff2', name: 'D', x: 37.5, y: 8, w: 1, h: 3, type: 'door' },
+        { id: 'd_sringar_n_ff2', name: 'D', x: 55, y: 6.5, w: 2, h: 1, type: 'door' },
+        { id: 'd_wash_n_ff2', name: 'D', x: 53, y: 14, w: 1, h: 2, type: 'door' },
+        { id: 'd_balcony_n_ff2', name: 'D', x: 58, y: 9.5, w: 1, h: 2, type: 'door' },
 
         // === WINDOWS ===
-        { id: 'w_lobby_e', name: 'W', x: 4, y: 4, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_lobby_s', name: 'W', x: 0, y: 7, w: 0.6, h: 4, type: 'window' },
-        { id: 'w_master_ff_s', name: 'W', x: 0, y: 20, w: 0.6, h: 4, type: 'window' },
-        { id: 'w_master_ff_w', name: 'W', x: 4, y: 25.4, w: 4, h: 0.6, type: 'window' },
-        { id: 'w_bed4_e', name: 'W', x: 30, y: 0, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_bed5_e', name: 'W', x: 46, y: 0, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_bath5_n', name: 'W', x: 60.4, y: 8, w: 0.6, h: 3, type: 'window' },
+        { id: 'w_big_bed2_front', name: 'W', x: 42, y: 0, w: 5, h: 0.6, type: 'window' }
     ],
-    ff_opt3: [
-        // Option 3: Like Option 1, but washroom between Bed 4 & Bed 5
-        { id: 'balcony', name: 'Balcony', sub: '26×4', x: 0, y: 0, w: 26, h: 4, color: 'rgba(255,255,255,0.08)', border: 'dashed' },
-        { id: 'bed3', name: 'Bedroom 3', sub: '13×9', x: 0, y: 4, w: 13, h: 9, color: 'rgba(100,200,255,0.12)' },
-        { id: 'lobby', name: 'Family Lobby', sub: '13×9', x: 13, y: 4, w: 13, h: 9, color: 'rgba(255,255,255,0.05)' },
-        { id: 'corridor_ff', name: '4ft Corridor', x: 0, y: 13, w: 26, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
-        { id: 'master_ff', name: 'Master Bed (FF)', sub: '12×9 (SW)', x: 0, y: 17, w: 12, h: 9, color: 'rgba(150,100,255,0.12)' },
-        { id: 'att_bath_ff', name: 'Att. Bath', sub: '5×5', x: 12, y: 21, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
-        { id: 'com_bath_ff', name: 'Com. Bath', sub: '5×4', x: 12, y: 17, w: 5, h: 4, color: 'rgba(0,200,200,0.15)' },
-        { id: 'staircase_ff', name: 'Staircase', sub: '9×9', x: 17, y: 17, w: 9, h: 9, color: 'rgba(200,200,200,0.1)' },
+    ff3: [
+        // === FRONT BALCONY (4ft extension over passage — East side, connects both side balconies) ===
+        { id: 'balcony_front_ff3', name: 'Front Balcony', x: -9, y: 0, w: 71, h: 4, color: 'rgba(255,255,255,0.08)' },
 
-        { id: 'ff_passage', name: '4ft Corridor', x: 26, y: 13, w: 35, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
-        { id: 'bed4', name: 'Bedroom 4', sub: '15×13', x: 26, y: 0, w: 15, h: 13, color: 'rgba(100,200,255,0.12)' },
-        { id: 'att_bath_4', name: 'Att. Bath 4', sub: '5×6', x: 41, y: 7, w: 5, h: 6, color: 'rgba(0,200,200,0.15)' },
-        { id: 'att_bath_5', name: 'Att. Bath 5', sub: '5×7', x: 41, y: 0, w: 5, h: 7, color: 'rgba(0,200,200,0.15)' },
-        { id: 'bed5', name: 'Bedroom 5', sub: '15×13', x: 46, y: 0, w: 15, h: 13, color: 'rgba(150,100,255,0.12)' },
+        // === ZONE 1: SOUTH (26×26 + 5ft extension) ===
+        // South Balcony: 4ft cantilever outside the south wall (X: -9 to -5)
+        { id: 'balcony_south_ff3', name: 'S. Balcony', sub: '4×22', x: -9, y: 4, w: 4, h: 22, color: 'rgba(255,255,255,0.08)' },
 
-        { id: 'd_bed3', name: 'D', x: 4, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_master_ff', name: 'D', x: 4, y: 16.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath_ff1', name: 'D', x: 13, y: 16.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bath_ff2', name: 'D', x: 13, y: 20.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bed4', name: 'D', x: 31, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bed5', name: 'D', x: 50, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath_4', name: 'D', x: 40.5, y: 10, w: 1, h: 2, type: 'door' },
-        { id: 'd_bath_5', name: 'D', x: 45.5, y: 4, w: 1, h: 2, type: 'door' },
+        // Master Suite: absorbs kitchen area (13×22)
+        { id: 'master_ff3', name: 'Master Suite', sub: '13×22', x: 0, y: 4, w: 13, h: 22, color: 'rgba(150,100,255,0.12)' },
 
-        { id: 'w_bed3_e', name: 'W', x: 4, y: 4, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_bed3_s', name: 'W', x: 0, y: 7, w: 0.6, h: 4, type: 'window' },
-        { id: 'w_master_ff_s', name: 'W', x: 0, y: 20, w: 0.6, h: 4, type: 'window' },
-        { id: 'w_master_ff_w', name: 'W', x: 4, y: 25.4, w: 4, h: 0.6, type: 'window' },
-        { id: 'w_bed4_e', name: 'W', x: 30, y: 0, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_bath5_e', name: 'W', x: 42, y: 0, w: 3, h: 0.6, type: 'window' },
-        { id: 'w_bed5_e', name: 'W', x: 52, y: 0, w: 5, h: 0.6, type: 'window' },
-    ],
-    ff_opt4: [
-        // Option 4: Like Option 3, but Bedroom 3 + Lobby merged into a 26x9 Family Lobby. Balcony remains 26x4.
-        { id: 'balcony', name: 'Balcony', sub: '26×4', x: 0, y: 0, w: 26, h: 4, color: 'rgba(255,255,255,0.08)', border: 'dashed' },
-        { id: 'lobby_large', name: 'Large Family Lobby', sub: '26×9', x: 0, y: 4, w: 26, h: 9, color: 'rgba(255,255,255,0.05)' },
-        { id: 'corridor_ff', name: '4ft Corridor', x: 0, y: 13, w: 26, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
-        { id: 'master_ff', name: 'Master Bed (FF)', sub: '12×9 (SW)', x: 0, y: 17, w: 12, h: 9, color: 'rgba(150,100,255,0.12)' },
-        { id: 'att_bath_ff', name: 'Att. Bath', sub: '5×5', x: 12, y: 21, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
-        { id: 'com_bath_ff', name: 'Com. Bath', sub: '5×4', x: 12, y: 17, w: 5, h: 4, color: 'rgba(0,200,200,0.15)' },
-        { id: 'staircase_ff', name: 'Staircase', sub: '9×9', x: 17, y: 17, w: 9, h: 9, color: 'rgba(200,200,200,0.1)' },
+        // Sringar Room: replaces GF store+wash area (5×9)
+        { id: 'sringar_ladies_ff3', name: 'Sringar Room', sub: '5×9', x: -5, y: 4, w: 5, h: 9, color: 'rgba(255,180,180,0.15)' },
 
-        { id: 'ff_passage', name: '4ft Corridor', x: 26, y: 13, w: 35, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
-        { id: 'bed4', name: 'Bedroom 4', sub: '15×13', x: 26, y: 0, w: 15, h: 13, color: 'rgba(100,200,255,0.12)' },
-        { id: 'att_bath_4', name: 'Att. Bath 4', sub: '5×6', x: 41, y: 7, w: 5, h: 6, color: 'rgba(0,200,200,0.15)' },
-        { id: 'att_bath_5', name: 'Att. Bath 5', sub: '5×7', x: 41, y: 0, w: 5, h: 7, color: 'rgba(0,200,200,0.15)' },
-        { id: 'bed5', name: 'Bedroom 5', sub: '15×13', x: 46, y: 0, w: 15, h: 13, color: 'rgba(150,100,255,0.12)' },
+        // Empty Area (5×5) + Cabinets (5×2) against washroom wall
+        { id: 'empty_area_ff3', name: 'Empty Area', sub: '5×5', x: -5, y: 13, w: 5, h: 5, color: 'rgba(255,230,150,0.15)' },
+        { id: 'wardrobe_cab_ff3', name: 'Cabinets', sub: '5×2', x: -5, y: 18, w: 5, h: 2, color: 'rgba(160,82,45,0.3)' },
 
-        { id: 'd_master_ff', name: 'D', x: 4, y: 16.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath_ff1', name: 'D', x: 13, y: 16.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bath_ff2', name: 'D', x: 13, y: 20.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bed4', name: 'D', x: 31, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bed5', name: 'D', x: 50, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath_4', name: 'D', x: 40.5, y: 10, w: 1, h: 2, type: 'door' },
-        { id: 'd_bath_5', name: 'D', x: 45.5, y: 4, w: 1, h: 2, type: 'door' },
+        // Attached Washroom (5×6) — same as GF
+        { id: 'att_bath_ext_ff3', name: 'Att. Wash', sub: '5×6', x: -5, y: 20, w: 5, h: 6, color: 'rgba(0,200,200,0.15)' },
 
-        { id: 'w_lobby_e', name: 'W', x: 4, y: 4, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_lobby_s', name: 'W', x: 0, y: 7, w: 0.6, h: 4, type: 'window' },
-        { id: 'w_master_ff_s', name: 'W', x: 0, y: 20, w: 0.6, h: 4, type: 'window' },
-        { id: 'w_master_ff_w', name: 'W', x: 4, y: 25.4, w: 4, h: 0.6, type: 'window' },
-        { id: 'w_bed4_e', name: 'W', x: 30, y: 0, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_bath5_e', name: 'W', x: 42, y: 0, w: 3, h: 0.6, type: 'window' },
-        { id: 'w_bed5_e', name: 'W', x: 52, y: 0, w: 5, h: 0.6, type: 'window' },
-    ],
-    ff_opt5: [
-        // Option 5: Like Option 3, but Bed 4 & Bed 5 are 13x13, leaving 4ft for North Balcony & Wash Area
-        { id: 'balcony', name: 'Balcony', sub: '26×4', x: 0, y: 0, w: 26, h: 4, color: 'rgba(255,255,255,0.08)', border: 'dashed' },
-        { id: 'bed3', name: 'Bedroom 3', sub: '13×9', x: 0, y: 4, w: 13, h: 9, color: 'rgba(100,200,255,0.12)' },
-        { id: 'lobby', name: 'Family Lobby', sub: '13×9', x: 13, y: 4, w: 13, h: 9, color: 'rgba(255,255,255,0.05)' },
-        { id: 'corridor_ff', name: '4ft Corridor', x: 0, y: 13, w: 26, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
-        { id: 'master_ff', name: 'Master Bed (FF)', sub: '12×9 (SW)', x: 0, y: 17, w: 12, h: 9, color: 'rgba(150,100,255,0.12)' },
-        { id: 'att_bath_ff', name: 'Att. Bath', sub: '5×5', x: 12, y: 21, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
-        { id: 'com_bath_ff', name: 'Com. Bath', sub: '5×4', x: 12, y: 17, w: 5, h: 4, color: 'rgba(0,200,200,0.15)' },
-        { id: 'staircase_ff', name: 'Staircase', sub: '9×9', x: 17, y: 17, w: 9, h: 9, color: 'rgba(200,200,200,0.1)' },
+        // Guest Bedroom (13×13) — same footprint as GF
+        { id: 'guest_ff3', name: 'Guest Bedroom', sub: '13×13', x: 13, y: 13, w: 13, h: 13, color: 'rgba(100,200,255,0.12)' },
 
-        // North zone shifted & resized
-        { id: 'ff_passage', name: '4ft Corridor', x: 26, y: 13, w: 31, h: 4, color: 'rgba(255,255,255,0.06)', border: 'dashed' },
-        { id: 'bed4', name: 'Bedroom 4', sub: '13×13', x: 26, y: 0, w: 13, h: 13, color: 'rgba(100,200,255,0.12)' },
-        { id: 'att_bath_4', name: 'Att. Bath 4', sub: '5×6', x: 39, y: 7, w: 5, h: 6, color: 'rgba(0,200,200,0.15)' },
-        { id: 'att_bath_5', name: 'Att. Bath 5', sub: '5×7', x: 39, y: 0, w: 5, h: 7, color: 'rgba(0,200,200,0.15)' },
-        { id: 'bed5', name: 'Bedroom 5', sub: '13×13', x: 44, y: 0, w: 13, h: 13, color: 'rgba(150,100,255,0.12)' },
-        { id: 'n_balcony', name: 'N. Balcony', sub: '4×13', x: 57, y: 0, w: 4, h: 13, color: 'rgba(255,255,255,0.08)', border: 'dashed' },
-        { id: 'wash_area', name: 'Wash Area', sub: '4×4', x: 57, y: 13, w: 4, h: 4, color: 'rgba(0,150,255,0.15)', border: 'dashed' },
+        // Family Lobby (13×9) — above GF kitchen zone
+        { id: 'lobby_ff3', name: 'Family Lobby', sub: '13×9', x: 13, y: 4, w: 13, h: 9, color: 'rgba(255,255,255,0.05)' },
 
-        // Doors
-        { id: 'd_bed3', name: 'D', x: 4, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_master_ff', name: 'D', x: 4, y: 16.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath_ff1', name: 'D', x: 13, y: 16.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bath_ff2', name: 'D', x: 13, y: 20.5, w: 1, h: 1, type: 'door' },
-        { id: 'd_bed4', name: 'D', x: 31, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bed5', name: 'D', x: 48, y: 12.5, w: 3, h: 1, type: 'door' },
-        { id: 'd_bath_4', name: 'D', x: 38.5, y: 10, w: 1, h: 2, type: 'door' },
-        { id: 'd_bath_5', name: 'D', x: 43.5, y: 4, w: 1, h: 2, type: 'door' },
-        { id: 'd_balcony_n', name: 'D', x: 56.5, y: 4, w: 1, h: 2, type: 'door' },
+        // === ZONE 2: NORTH (32×13 area) ===
+        // North Balcony: 4ft cantilever outside the north wall (X: 58 to 62)
+        { id: 'balcony_north_ff3', name: 'N. Balcony', sub: '4×13', x: 58, y: 4, w: 4, h: 13, color: 'rgba(255,255,255,0.08)' },
 
-        // Windows
-        { id: 'w_bed3_e', name: 'W', x: 4, y: 4, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_bed3_s', name: 'W', x: 0, y: 7, w: 0.6, h: 4, type: 'window' },
-        { id: 'w_master_ff_s', name: 'W', x: 0, y: 20, w: 0.6, h: 4, type: 'window' },
-        { id: 'w_master_ff_w', name: 'W', x: 4, y: 25.4, w: 4, h: 0.6, type: 'window' },
-        { id: 'w_bed4_e', name: 'W', x: 30, y: 0, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_bath5_e', name: 'W', x: 40, y: 0, w: 3, h: 0.6, type: 'window' },
-        { id: 'w_bed5_e', name: 'W', x: 50, y: 0, w: 5, h: 0.6, type: 'window' },
-        { id: 'w_balcony_n', name: 'W', x: 60.4, y: 8, w: 0.6, h: 3, type: 'window' },
-        { id: 'w_wash_n', name: 'W', x: 60.4, y: 14, w: 0.6, h: 2, type: 'window' },
+        // Staircase (7×10) — shifted towards Big Bed 2
+        { id: 'staircase_ff3', name: 'Staircase', sub: '7×10', x: 31, y: 7, w: 7, h: 10, color: 'rgba(200,200,200,0.1)' },
+
+        // Guest Attached Washroom built in the vacant space
+        { id: 'att_bath_guest_ff3', name: 'Att. Wash', sub: '5×5 (Guest)', x: 26, y: 12, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
+
+        // Big Bed 2: 15×13 (X:38 to X:53)
+        { id: 'big_room_2_ff3', name: 'Big Bed 2', sub: '15×13', x: 38, y: 4, w: 15, h: 13, color: 'rgba(150,100,255,0.15)' },
+
+        // Dressing Room (5×5) — above GF Puja Ghar
+        { id: 'sringar_n_ff3', name: 'Dressing Room', sub: '5×5 (NE)', x: 53, y: 4, w: 5, h: 5, color: 'rgba(255,230,150,0.15)' },
+
+        // Attached Washroom (5×5) — above GF Common Washroom
+        { id: 'att_bath_n_ff3', name: 'Att. Wash', sub: '5×5 (NW)', x: 53, y: 12, w: 5, h: 5, color: 'rgba(0,200,200,0.15)' },
+
+        // === DOORS ===
+        { id: 'd_master_ff3_lobby', name: 'D', x: 12.5, y: 8, w: 1, h: 3, type: 'door' },
+        { id: 'd_sringar_master_ff3', name: 'D', x: -3, y: 12.5, w: 2, h: 1, type: 'door' },
+        { id: 'd_wardrobe_master_ff3', name: 'D', x: -0.5, y: 15, w: 1, h: 2, type: 'door' },
+        { id: 'd_wash_master_ff3', name: 'D', x: -0.5, y: 21, w: 1, h: 2, type: 'door' },
+        { id: 'd_balcony_s_ff3', name: 'D', x: -5.5, y: 14, w: 1, h: 2, type: 'door' },
+
+        { id: 'd_guest_ff3_lobby', name: 'D', x: 17, y: 12.5, w: 3, h: 1, type: 'door' },
+        { id: 'd_big_room_2_ff3', name: 'D', x: 37.5, y: 5, w: 1, h: 2, type: 'door' },
+        { id: 'd_sringar_n_ff3', name: 'D', x: 53, y: 6, w: 1, h: 2, type: 'door' },
+        { id: 'd_wash_n_ff3', name: 'D', x: 53, y: 14, w: 1, h: 2, type: 'door' },
+        { id: 'd_balcony_n_ff3', name: 'D', x: 58, y: 9.5, w: 1, h: 2, type: 'door' },
+        { id: 'd_att_guest_ff3', name: 'D', x: 26, y: 14, w: 1, h: 2, type: 'door' },
+        { id: 'd_att_guest_outer_ff3', name: 'D', x: 28, y: 11.5, w: 2, h: 1, type: 'door' }
     ]
 };
 
 const blueprintEl = document.getElementById('blueprint');
 const btnGf = document.getElementById('btn-gf');
-const btnFfOpt1 = document.getElementById('btn-ff-opt1');
-const btnFfOpt2 = document.getElementById('btn-ff-opt2');
+const btnGf2 = document.getElementById('btn-gf2');
+const btnFf = document.getElementById('btn-ff');
+const btnFf2 = document.getElementById('btn-ff2');
+const btnFf3 = document.getElementById('btn-ff3');
 let currentScale = 1;
 
 function drawPlot(svg, svgNS) {
@@ -280,10 +329,11 @@ function drawPlot(svg, svgNS) {
         let ox1 = p1.x * S, oy1 = p1.y * S, ox2 = p2.x * S, oy2 = p2.y * S;
         let tx, ty, rot = 0;
         const off = 28;
+        const offLR = 80; // larger offset for left/right to clear 4ft balconies
         switch (dim.pos) {
             case 'top': oy1 -= off; oy2 -= off; tx = (ox1 + ox2) / 2; ty = oy1 - 8; break;
-            case 'right': ox1 += off; ox2 += off; tx = ox1 + 10; ty = (oy1 + oy2) / 2; rot = 90; break;
-            case 'left': ox1 -= off; ox2 -= off; tx = ox1 - 10; ty = (oy1 + oy2) / 2; rot = -90; break;
+            case 'right': ox1 += offLR; ox2 += offLR; tx = ox1 + 10; ty = (oy1 + oy2) / 2; rot = 90; break;
+            case 'left': ox1 -= offLR; ox2 -= offLR; tx = ox1 - 10; ty = (oy1 + oy2) / 2; rot = -90; break;
             case 'bottom': oy1 += off; oy2 += off; tx = (ox1 + ox2) / 2; ty = oy1 + 16; break;
             case 'bottom-upper': oy1 += off; oy2 += off; tx = (ox1 + ox2) / 2; ty = oy1 + 16; break;
             case 'step': ox1 += off; ox2 += off; tx = ox1 + 10; ty = (oy1 + oy2) / 2; rot = 90; break;
@@ -317,8 +367,7 @@ function drawPlot(svg, svgNS) {
     const dirs = [
         { label: 'EAST (FRONT / ROAD)', x: 30.5 * S, y: -40 },
         { label: 'WEST (BACK)', x: 13 * S, y: 26 * S + 50 },
-        { label: 'NORTH', x: 61 * S + 45, y: 7 * S, r: 90 },
-        { label: 'SOUTH', x: -45, y: 13 * S, r: -90 },
+        { label: 'NORTH', x: 58 * S + 45, y: 7 * S, r: 90 }
     ];
     dirs.forEach(d => {
         const t = document.createElementNS(svgNS, 'text');
@@ -408,12 +457,12 @@ function drawRooms(svg, svgNS, floorKey) {
 
 function renderFloor(floorKey) {
     blueprintEl.innerHTML = '';
-    blueprintEl.style.width = (61 * S) + 'px';
+    blueprintEl.style.width = (58 * S) + 'px';
     blueprintEl.style.height = (26 * S) + 'px';
 
     const svgNS = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(svgNS, 'svg');
-    svg.setAttribute('width', 61 * S);
+    svg.setAttribute('width', 58 * S);
     svg.setAttribute('height', 26 * S);
     svg.style.position = 'absolute';
     svg.style.top = '0';
@@ -421,73 +470,22 @@ function renderFloor(floorKey) {
     svg.style.overflow = 'visible';
 
     drawRooms(svg, svgNS, floorKey);
-    drawPlot(svg, svgNS); // Plot outline on top of rooms
+    drawPlot(svg, svgNS);
     blueprintEl.appendChild(svg);
 }
 
-btnGf.addEventListener('click', () => {
-    btnGf.classList.add('active');
-    btnFfOpt1.classList.remove('active');
-    btnFfOpt2.classList.remove('active');
-    btnFfOpt3.classList.remove('active');
-    btnFfOpt4.classList.remove('active');
-    btnFfOpt5.classList.remove('active');
-    renderFloor('gf');
-});
+function setActive(btn) {
+    [btnGf, btnGf2, btnFf, btnFf2, btnFf3].forEach(b => {
+        if(b) b.classList.remove('active');
+    });
+    btn.classList.add('active');
+}
 
-btnFfOpt1.addEventListener('click', () => {
-    btnFfOpt1.classList.add('active');
-    btnGf.classList.remove('active');
-    btnFfOpt2.classList.remove('active');
-    btnFfOpt3.classList.remove('active');
-    btnFfOpt4.classList.remove('active');
-    btnFfOpt5.classList.remove('active');
-    renderFloor('ff_opt1');
-});
-
-btnFfOpt2.addEventListener('click', () => {
-    btnFfOpt2.classList.add('active');
-    btnGf.classList.remove('active');
-    btnFfOpt1.classList.remove('active');
-    btnFfOpt3.classList.remove('active');
-    btnFfOpt4.classList.remove('active');
-    btnFfOpt5.classList.remove('active');
-    renderFloor('ff_opt2');
-});
-
-const btnFfOpt3 = document.getElementById('btn-ff-opt3');
-const btnFfOpt4 = document.getElementById('btn-ff-opt4');
-const btnFfOpt5 = document.getElementById('btn-ff-opt5');
-
-btnFfOpt3.addEventListener('click', () => {
-    btnFfOpt3.classList.add('active');
-    btnGf.classList.remove('active');
-    btnFfOpt1.classList.remove('active');
-    btnFfOpt2.classList.remove('active');
-    btnFfOpt4.classList.remove('active');
-    btnFfOpt5.classList.remove('active');
-    renderFloor('ff_opt3');
-});
-
-btnFfOpt4.addEventListener('click', () => {
-    btnFfOpt4.classList.add('active');
-    btnGf.classList.remove('active');
-    btnFfOpt1.classList.remove('active');
-    btnFfOpt2.classList.remove('active');
-    btnFfOpt3.classList.remove('active');
-    btnFfOpt5.classList.remove('active');
-    renderFloor('ff_opt4');
-});
-
-btnFfOpt5.addEventListener('click', () => {
-    btnFfOpt5.classList.add('active');
-    btnGf.classList.remove('active');
-    btnFfOpt1.classList.remove('active');
-    btnFfOpt2.classList.remove('active');
-    btnFfOpt3.classList.remove('active');
-    btnFfOpt4.classList.remove('active');
-    renderFloor('ff_opt5');
-});
+btnGf.addEventListener('click', () => { setActive(btnGf); renderFloor('gf'); });
+btnGf2.addEventListener('click', () => { setActive(btnGf2); renderFloor('gf2'); });
+btnFf.addEventListener('click', () => { setActive(btnFf); renderFloor('ff'); });
+btnFf2.addEventListener('click', () => { setActive(btnFf2); renderFloor('ff2'); });
+if(btnFf3) btnFf3.addEventListener('click', () => { setActive(btnFf3); renderFloor('ff3'); });
 
 let currentRotation = 0;
 
